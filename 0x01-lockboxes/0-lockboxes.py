@@ -19,4 +19,3 @@ def canUnlockAll(boxes):
         return True
     else:
         return False
-    
