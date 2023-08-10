@@ -1,0 +1,1 @@
+Another common interview question is the lockboxes puzzle. Given a list of boxes in a list of lists format, determine if all the boxes can be opened.
