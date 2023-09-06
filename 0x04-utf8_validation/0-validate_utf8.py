@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-"""a method that determines if a given data set represents a valid UTF-8 encoding"""
+"""method to determine if a given data set rep  UTF-8 encoding"""
 
 
 def validUTF8(data):
-    """a method that determines if a given data set represents a valid UTF-8 encoding"""
+    """method to determine if a given data set rep UTF-8 encoding"""
     num_bytes = 0
     for num in data:
         bin_rep = format(num, '#010b')[-8:]
