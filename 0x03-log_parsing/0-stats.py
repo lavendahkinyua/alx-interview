@@ -1,33 +1,43 @@
 #!/usr/bin/python3
-"""Log parsing"""
 
 import sys
 
-def print_stats(status_codes, file_size):
-    """Prints the stats"""
-    print("File size: {}".format(file_size))
-    for key, value in sorted(status_codes.items()):
-        if value != 0:
-            print("{}: {}".format(key, value))
+def print_msg(dict_sc, total_file_size):
+    """Prints the statistics"""
+    print("File size: {}".format(total_file_size))
+    for key, val in sorted(dict_sc.items()):
+        if val != 0:
+            print("{}: {}".format(key, val))
 
-file_size = 0
-code = 0
+total_file_size = 0
 counter = 0
-status_codes = {"200": 0, "301": 0, "400": 0, "401": 0,
-                "403": 0, "404": 0, "405": 0, "500": 0}
+dict_sc = {"200": 0,
+           "301": 0,
+           "400": 0,
+           "401": 0,
+           "403": 0,
+           "404": 0,
+           "405": 0,
+           "500": 0}
 
 try:
     for line in sys.stdin:
-        counter += 1
-        data = line.split()
-        if len(data) >= 8:  # Check for at least 8 elements in the data list
-            file_size += int(data[-1])
-            code = data[-2]
-            if code in status_codes:
-                status_codes[code] += 1
-        if counter % 10 == 0:
-            print_stats(status_codes, file_size)
+        parsed_line = line.split()
+
+        if len(parsed_line) > 2:
+            counter += 1
+            total_file_size += int(parsed_line[-1])  # file size
+            code = parsed_line[-2]  # status code
+
+            if code in dict_sc:
+                dict_sc[code] += 1
+
+        if counter == 10:
+            print_msg(dict_sc, total_file_size)
+            counter = 0
+
 except KeyboardInterrupt:
-    print_stats(status_codes, file_size)
+    print_msg(dict_sc, total_file_size)
     raise
-print_stats(status_codes, file_size)
+
+print_msg(dict_sc, total_file_size)
