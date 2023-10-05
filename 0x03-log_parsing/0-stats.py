@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 """Log parsing"""
 
-
 import sys
-
 
 def print_stats(status_codes, file_size):
     """Prints the stats"""
@@ -11,7 +9,6 @@ def print_stats(status_codes, file_size):
     for key, value in sorted(status_codes.items()):
         if value != 0:
             print("{}: {}".format(key, value))
-
 
 file_size = 0
 code = 0
@@ -23,7 +20,7 @@ try:
     for line in sys.stdin:
         counter += 1
         data = line.split()
-        if len(data) > 2:
+        if len(data) >= 8:  # Check for at least 8 elements in the data list
             file_size += int(data[-1])
             code = data[-2]
             if code in status_codes:
