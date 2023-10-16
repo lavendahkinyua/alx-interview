@@ -23,20 +23,19 @@ status_codes = {
 }
 
 try:
-    for line in sys.stdin:
-        counter += 1
-        data = line.split()
-        if len(data) >= 7:  # Check for at least 7 elements in the data list
-            file_size += int(data[-1])
-            code = data[-2]
-            if code in status_codes:
-                status_codes[code] += 1
-        if counter == 10:
-            print_stats(status_codes, file_size)
-            counter = 0
-
+   while True:
+        for line in sys.stdin:
+            counter += 1
+            try:
+                parsed_line = line.split()
+                file_size += int(parsed_line[-1])
+                status_codes[parsed_line[-2]] += 1
+            except:
+                pass
+            if counter == 10:
+                print_stats(status_codes, file_size)
+                counter = 0
 except KeyboardInterrupt:
     print_stats(status_codes, file_size)
     raise
-
-print_stats(status_codes, file_size)
+ 
