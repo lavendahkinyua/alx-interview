@@ -5,9 +5,10 @@ import sys
 def print_stats(status_codes, file_size):
     """Prints the stats"""
     print("File size: {}".format(file_size))
-    for key, value in sorted(status_codes.items()):
-        if value != 0:
-            print("{}: {}".format(key, value))
+    for code in sorted(status_codes.keys()):
+        count = status_codes[code]
+        if count > 0:
+            print("{}: {}".format(code, count))
 
 file_size = 0
 counter = 0
@@ -25,14 +26,19 @@ status_codes = {
 try:
     while True:
         for line in sys.stdin:
-            parsed_line = line.split()
-            if len(parsed_line) >= 7 and parsed_line[-2] in status_codes:
-                file_size += int(parsed_line[-1])
-                status_codes[parsed_line[-2]] += 1
-                counter += 1
-                if counter == 10:
-                    print_stats(status_codes, file_size)
-                    counter = 0
+            if not line.strip():
+                continue  # Skip empty lines
+
+            parts = line.split()
+            if len(parts) >= 7:
+                code = parts[-2]
+                if code in status_codes:
+                    file_size += int(parts[-1])
+                    status_codes[code] += 1
+                    counter += 1
+                    if counter == 10:
+                        print_stats(status_codes, file_size)
+                        counter = 0
 
 except KeyboardInterrupt:
     print_stats(status_codes, file_size)
