@@ -24,25 +24,18 @@ status_codes = {
 
 try:
     while True:
-        try:
-            line = input()  # Read a line from standard input
+        for line in sys.stdin:
             parsed_line = line.split()
-            if len(parsed_line) >= 7:  # Check for the correct format
+            if len(parsed_line) >= 7 and parsed_line[-2] in status_codes:
                 file_size += int(parsed_line[-1])
-                code = parsed_line[-2]
-                if code in status_codes:
-                    status_codes[code] += 1
+                status_codes[parsed_line[-2]] += 1
                 counter += 1
                 if counter == 10:
                     print_stats(status_codes, file_size)
                     counter = 0
-        except KeyboardInterrupt:
-            print_stats(status_codes, file_size)
-            raise
-        except Exception as e:
-            pass
 
-except EOFError:
-    pass
 except KeyboardInterrupt:
     print_stats(status_codes, file_size)
+    raise
+except EOFError:
+    pass
