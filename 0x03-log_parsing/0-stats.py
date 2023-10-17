@@ -13,9 +13,10 @@ def print_metrics(status_code_counts, total_file_size):
     Returns:
         None
     """
-    print("Total file size: File size:", total_file_size)
-    for code, count in sorted(status_code_counts.items(), key=lambda x: int(x[0])):
-        if count != 0:
+    print("Total file size:", total_file_size)
+    for code in sorted(status_code_counts.keys(), key=lambda x: int(x)):
+        count = status_code_counts[code]
+        if count > 0:
             print(f"{code}: {count}")
 
 def main():
@@ -37,13 +38,16 @@ def main():
             line_parts = line.split()
 
             if len(line_parts) == 7:
-                file_size = int(line_parts[-1])
+                file_size = line_parts[-1]
                 status_code = line_parts[-2]
-
-                total_file_size += file_size
 
                 if status_code in status_code_counts:
                     status_code_counts[status_code] += 1
+
+                try:
+                    total_file_size += int(file_size)
+                except ValueError:
+                    pass
 
                 line_counter += 1
 
