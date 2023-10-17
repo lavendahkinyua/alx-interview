@@ -1,5 +1,12 @@
 #!/usr/bin/python3
-"""Log parsing module"""
+"""
+Log Processing Script
+---------------------
+
+This script reads log lines from standard input, processes them, and prints metrics.
+"""
+
+# Import necessary modules
 import sys
 
 # Initialize variables to store metrics
