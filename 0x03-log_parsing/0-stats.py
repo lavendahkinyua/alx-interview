@@ -2,46 +2,50 @@
 """Log parsing"""
 import sys
 
-def print_stats(status_codes, file_size):
-    """Prints the stats"""
-    print("File size: {}".format(file_size))
-    for code in sorted(status_codes.keys()):
-        count = status_codes[code]
-        if count > 0:
-            print("{}: {}".format(code, count))
-
-file_size = 0
-counter = 0
-status_codes = {
-    "200": 0,
-    "301": 0,
-    "400": 0,
-    "401": 0,
-    "403": 0,
-    "404": 0,
-    "405": 0,
-    "500": 0
-}
+# Initialize variables to store metrics
+total_size = 0
+status_code_counts = {}
 
 try:
+    line_number = 0
     while True:
-        for line in sys.stdin:
-            if not line.strip():
-                continue  # Skip empty lines
+        line = sys.stdin.readline()
+        if not line:
+            break  # End of input
 
-            parts = line.split()
-            if len(parts) >= 7:
-                code = parts[-2]
-                if code in status_codes:
-                    file_size += int(parts[-1])
-                    status_codes[code] += 1
-                    counter += 1
-                    if counter == 10:
-                        print_stats(status_codes, file_size)
-                        counter = 0
+        line = line.strip()
+
+        # Parse the line to extract the relevant information
+        parts = line.split()
+        if len(parts) != 7:
+            continue  # Skip lines that don't match the expected format
+
+        ip_address, date, request, status_code, file_size = parts
+
+        try:
+            file_size = int(file_size)
+        except ValueError:
+            continue  # Skip lines with non-integer file size
+
+        # Update total file size
+        total_size += file_size
+
+        # Update status code counts
+        if status_code in {"200", "301", "400", "401", "403", "404", "405", "500"}:
+            if status_code not in status_code_counts:
+                status_code_counts[status_code] = 0
+            status_code_counts[status_code] += 1
+
+        line_number += 1
+
+        # Print statistics every 10 lines or on keyboard interruption (CTRL+C)
+        if line_number % 10 == 0:
+            print("Total file size: File size:", total_size)
+            for code in sorted(status_code_counts.keys(), key=lambda x: int(x)):
+                print(f"{code}: {status_code_counts[code]}")
 
 except KeyboardInterrupt:
-    print_stats(status_codes, file_size)
-    raise
-except EOFError:
-    pass
+    # Handle keyboard interruption (CTRL+C)
+    print("Total file size: File size:", total_size)
+    for code in sorted(status_code_counts.keys(), key=lambda x: int(x)):
+        print(f"{code}: {status_code_counts[code}")
