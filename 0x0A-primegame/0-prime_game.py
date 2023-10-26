@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-""" Prime Game 
+""" Prime Game
 """
 
 
 def isWinner(x, nums):
-    """ who wins the prime game session with x rounds and nums list of nums 
+    """ who wins the prime game session with x rounds and nums list of nums
     """
     if x < 1 or not nums:
         return None
@@ -23,4 +23,4 @@ def isWinner(x, nums):
         marias_wins += primes_count % 2 == 1
     if marias_wins == bens_wins:
         return None
-    return 'Maria' if marias_wins > bens_wins else 'Ben'  
+    return 'Maria' if marias_wins > bens_wins else 'Ben'
