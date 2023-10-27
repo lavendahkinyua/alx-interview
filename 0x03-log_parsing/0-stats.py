@@ -5,20 +5,20 @@ Metrics Calculator
 
 This script reads stdin line by line and computes metrics.
 
-Input format:<IP Address>-[<date>] "GET /projects/260 HTTP/1.1" <status code> <file size>
+Input format:<IP Address>[<date>] <status code><file size>
 (if the format is not this one, the line must be skipped)
 
-After every 10 lines and/or a keyboard interruption (CTRL + C), it prints these statistics from the beginning:
+After every 10 lines,keyboard interrupt print statistics since the beginning
 Total file size: File size: <total size>
-where <total size> is the sum of all previous <file size> (see input format above)
+where <total size>is the sum of all previous<file size>(see input format above)
 
 Number of lines by status code:
 possible status code: 200, 301, 400, 401, 403, 404, 405, and 500
-if a status code doesn’t appear or is not an integer, it doesn't print anything for this status code.
+status code doesn’t appear, not an integer, it doesn't print anything.
 format: <status code>: <number>
 status codes should be printed in ascending order
 
-Warning: In this sample, you will have random values - it’s normal to not have the same output as this one.
+Warning: In this sample, you will have random values.
 """
 import sys
 
