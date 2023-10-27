@@ -47,7 +47,7 @@ if __name__ == '__main__':
         cords = [r, c]
         placed_queens.append(cords)
         if r == n - 1:
-            solutions.append(placed_queens[:])
+            solving.append(placed_queens[:])
             for cord in placed_queens:
                 if cord[1] < n - 1:
                     r = cord[0]
@@ -78,8 +78,8 @@ if __name__ == '__main__':
         continue
     r += 1
 
-for idx, val in enumerate(solutions):
-    if idx == len(solutions) - 1:
+for idx, val in enumerate(solving):
+    if idx == len(solving) - 1:
         print(val, end='')
     else:
         print(val)
